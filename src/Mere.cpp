@@ -15,6 +15,7 @@
 #include "Mere.h"
 #include "/share/public/tp/tp-multitache/Outils.h"
 #include <unistd.h>
+#include "/share/public/tp/tp-multitache/Menu.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -40,8 +41,21 @@ int main ( )
 // Algorithme :
 //
 {
+	int pid_t noFils;
 	InitialiserApplication ( XTERM );
-	sleep(10);
+	if ( (noFils=fork())==0 )
+		//Code fils
+	{
+		Menu();
+	}
+	else
+		//code pere
+	{
+		pid_t ret = waitpid(noFils, NULL, 0);
+		TerminerApplication ( true );
+		exit(0);
+	}
+	//sleep(10);
 	TerminerApplication ( true );
 	return 0;
 } //----- fin de Nom

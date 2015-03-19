@@ -1,0 +1,8 @@
+Trouver le processus Carrefour parmi tous les processus :
+ps -e | grep Carrefour
+
+Tuer un processus :
+kill signal_processus
+
+Afficher les IPCs :
+ipcs

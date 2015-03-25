@@ -5,7 +5,7 @@ EXE             = Carrefour
 CXX            = g++
 
 # Options de compilation et editions de liens
-LIBS = -lncurses -ltcl -ltp
+LIBS = -ltp -lncurses -ltcl 
 CPPFLAGS        = -Wall -ansi -ggdb -g -std=c++11 -I/share/public/tp/tp-multitache
 EDLFLAGS        = -L/share/public/tp/tp-multitache $(LIBS)
 
@@ -30,15 +30,15 @@ $(EXE): $(OBJ)
 src/%.o: %.cpp
 	$(CXX) -c $< $(CPPFLAGS)
 
-#Supprimer les fichiers
+#Eviter fichiers de meme nom
 .PHONY: clean backup
 
+#Supprimer les fichiers
 clean:
 	$(RM) -fv src/*.o
 
 #Sauvegarde d une version backup
 backup:
-	$(ECHO) "Sauvegarde du backup..."
 	cp Makefile $(BACKUP)
 	cp src/*.h $(BACKUP)/src
 	cp src/*.cpp $(BACKUP)/src

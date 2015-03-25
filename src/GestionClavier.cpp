@@ -1,27 +1,18 @@
 /*************************************************************************
-                           Mere  -  description
+                           GestionClavier  -  description
                              -------------------
-    début                : Mere
-    copyright            : (C) Mere par Mere
-    e-mail               : Mere
+    début                : GestionClavier
+    copyright            : (C) GestionClavier par GestionClavier
+    e-mail               : GestionClavier
 *************************************************************************/
 
-//---------- Réalisation de la tâche <Mere> (fichier Mere.cpp) ---
+//---------- Réalisation de la tâche <GestionClavier> (fichier GestionClavier.cpp) ---
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
 
 //------------------------------------------------------ Include personnel
-#include "Mere.h"
-#include "/share/public/tp/tp-multitache/Outils.h"
-#include <unistd.h>
-#include <sys/wait.h>
-#include <stdlib.h>
-#include <iostream>
-#include <signal.h> 
-
-
-using namespace std;
+#include "GestionClavier.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -43,26 +34,9 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-int main ( )
+//type Nom ( liste de paramètres )
 // Algorithme :
 //
 {
-	
-	InitialiserApplication ( XTERM );
-	pid_t GestionMenu;
-	if ( (GestionMenu=fork()) == 0 )
-		//Code fils
-	{
-		Menu();
-	}
-	else
-		//code pere
-	{
-		pid_t ret = waitpid(noFils, NULL, 0);
-		TerminerApplication ( true );
-		exit(0);
-	}
-	sleep(10);
-	TerminerApplication ( true );
-	return 0;
 } //----- fin de Nom
+

@@ -10,7 +10,8 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
-
+#include <stdlib.h>
+#include <signal.h> 
 //------------------------------------------------------ Include personnel
 #include "Voie.h"
 
@@ -22,21 +23,33 @@
 //---------------------------------------------------- Variables statiques
 
 //------------------------------------------------------ Fonctions privées
-//static type nom ( liste de paramètres )
+static void FinVoie ( int noSignal )
 // Mode d'emploi :
 //
 // Contrat :
 //
 // Algorithme :
 //
-//{
-//} //----- fin de nom
+{
+	if ( noSignal == SIGUSR2 )
+	{
+		exit(0);
+	}
+} //----- fin de FinVoie
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-//pid_t CreerEtActiverVoie ( void )
+void CreerEtActiverVoie ( void )
 // Algorithme :
 //
-//{
-//} //----- fin de Nom
+{
+	//Creation d'un handler pour SIGUSR2
+	struct sigaction action;
+	action.sa_handler = FinVoie;
+	sigemptyset ( &action.sa_mask );
+	action.sa_flags = 0;
+	sigaction ( SIGUSR2, &action, NULL );
+
+
+} //----- fin de CreerEtActiverVoie
 

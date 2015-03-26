@@ -36,6 +36,13 @@
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
+/*pid_t CreerEtActiverGestionClavier (void)
+// Algorithme : Appel Menu
+//
+{
+
+}*/
+
 void Commande ( char code )
 // Algorithme :
 //

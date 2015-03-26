@@ -25,7 +25,7 @@
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-pid_t CreerEtActiverVoie ( void );
+void CreerEtActiverVoie ( void );
 // Mode d'emploi :
 //
 // Contrat :

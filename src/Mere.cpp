@@ -13,12 +13,17 @@
 
 //------------------------------------------------------ Include personnel
 #include "Mere.h"
+#include "Voie.h"
+#include "GestionClavier.h"
 #include "/share/public/tp/tp-multitache/Outils.h"
+#include "/share/public/tp/tp-multitache/Menu.h"
+#include "/share/public/tp/tp-multitache/Heure.h"
+
 #include <unistd.h>
 #include <sys/wait.h>
-#include <stdlib.h>
-#include <iostream>
-#include <signal.h> 
+//#include <stdlib.h>
+//#include <iostream>
+//#include <signal.h> 
 
 
 using namespace std;
@@ -49,20 +54,28 @@ int main ( )
 {
 	
 	InitialiserApplication ( XTERM );
-	pid_t GestionMenu;
-	if ( (GestionMenu=fork()) == 0 )
-		//Code fils
+	pid_t heure;
+	pid_t gestionMenu;
+
+	if ( (heure=CreerEtActiverHeure()) == 0)
 	{
+		/* code fils heure */
+	}
+	else if ( (gestionMenu=fork()) == 0 )
+	{
+		/* code fils gestionMenu */
 		Menu();
+		//Commande ('q');
 	}
 	else
-		//code pere
 	{
-		pid_t ret = waitpid(noFils, NULL, 0);
+		/* code Pere */
+		waitpid(gestionMenu, NULL, 0);
+		kill(heure, SIGUSR2);
 		TerminerApplication ( true );
-		exit(0);
+		//exit(0);
 	}
-	sleep(10);
-	TerminerApplication ( true );
+	//sleep(10);
+	//TerminerApplication ( true );
 	return 0;
 } //----- fin de Nom

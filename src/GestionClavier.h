@@ -19,6 +19,7 @@
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisées
 #include "/share/public/tp/tp-multitache/Menu.h"
+#include "/share/public/tp/tp-multitache/Outils.h"
 #include "Voie.h"
 #include <unistd.h>
 //------------------------------------------------------------- Constantes
@@ -36,16 +37,16 @@ pid_t CreerEtActiverGestionClavier (void);
 void Commande ( char code );
 // Mode d'emploi :
 //
-// Contrat :
+// Contrat : code est soit q, m, g ou d
 //
 
-void Commande ( Voie entree, Voie sortie );
+void Commande ( TypeVoie entree, TypeVoie sortie );
 // Mode d'emploi : Gestion de l arrivee manuelle
 //
 // Contrat :
 //
 
-void Commande ( Voie uneVoie, unsigned int duree );
+void Commande ( TypeVoie uneVoie, unsigned int duree );
 // Mode d'emploi : cas de changement de duree d un feu vert
 //
 // Contrat :

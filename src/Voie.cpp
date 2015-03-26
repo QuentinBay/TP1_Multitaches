@@ -34,9 +34,9 @@
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-pid_t CreerEtActiverVoie ( void );
+//pid_t CreerEtActiverVoie ( void )
 // Algorithme :
 //
-{
-} //----- fin de Nom
+//{
+//} //----- fin de Nom
 

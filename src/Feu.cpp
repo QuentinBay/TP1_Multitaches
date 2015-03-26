@@ -37,6 +37,6 @@
 //type Nom ( liste de paramètres )
 // Algorithme :
 //
-{
-} //----- fin de Nom
+//{
+//} //----- fin de Nom
 

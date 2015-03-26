@@ -10,8 +10,8 @@ CPPFLAGS        = -Wall -ansi -ggdb -g -std=c++11 -I/share/public/tp/tp-multitac
 EDLFLAGS        = -L/share/public/tp/tp-multitache $(LIBS)
 
 #Fichiers
-SRC             = src/$(wildcard *.cpp)
-INT             = src/Mere.h          #Mettre les .h ici
+SRC             =  
+INT             = src/Mere.h src/Voie.h src/Feu.h src/GestionClavier.h       #Mettre les .h ici
 REAL            = $(INT:.h=.cpp)
 OBJ             = $(INT:.h=.o)        #Mettre le .o du programme de test la où ya le main
 
@@ -27,8 +27,9 @@ $(EXE): $(OBJ)
 
 
 #Mettre les dependances particulieres ici
-src/%.o: %.cpp
+src/%.o: %.cpp 
 	$(CXX) -c $< $(CPPFLAGS)
+
 
 #Eviter fichiers de meme nom
 .PHONY: clean backup

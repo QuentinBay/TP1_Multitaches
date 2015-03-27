@@ -10,16 +10,6 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
-
-//------------------------------------------------------ Include personnel
-#include "Mere.h"
-#include "Voie.h"
-#include "GestionClavier.h"
-#include "/share/public/tp/tp-multitache/Outils.h"
-#include "/share/public/tp/tp-multitache/Menu.h"
-#include "/share/public/tp/tp-multitache/Heure.h"
-#include "/share/public/tp/tp-multitache/Generateur.h"
-
 #include <unistd.h>
 #include <sys/wait.h>
 //#include <stdlib.h>
@@ -35,6 +25,17 @@
 #include <sys/sem.h>
 //Pour boites aux lettres
 #include <sys/msg.h>
+
+//------------------------------------------------------ Include personnel
+#include "Mere.h"
+#include "Voie.h"
+#include "Feu.h"
+#include "GestionClavier.h"
+#include "/share/public/tp/tp-multitache/Outils.h"
+#include "/share/public/tp/tp-multitache/Menu.h"
+#include "/share/public/tp/tp-multitache/Heure.h"
+#include "/share/public/tp/tp-multitache/Generateur.h"
+
 
 using namespace std;
 
@@ -74,7 +75,7 @@ int main ( )
 	int memCouleurFeu = shmget ( clefCouleurFeu , sizeof(int)*4 , 660 | IPC_CREAT );
 
 	key_t clefDureeFeu = ftok ("Carrefour",1);
-	int memDureeFeu = shmget ( clefDureeFeu , sizeof(int)*4 , 660 | IPC_CREAT );
+	int memDureeFeu = shmget ( clefDureeFeu , sizeof(int)*2 , 660 | IPC_CREAT );
 
 	//Semaphores
 	key_t clefSemFeu = ftok ("Carrefour",1);
@@ -86,9 +87,10 @@ int main ( )
 
 /* ----------------------- Creation des processus ---------------------- */
 	pid_t heure;
-	pid_t gestionClavier;
-	pid_t generateur;
+	static pid_t generateur;
 	pid_t voie;
+	pid_t feu;
+	pid_t gestionClavier;
 
 	if ( (heure = CreerEtActiverHeure()) == 0 )
 	{
@@ -103,10 +105,15 @@ int main ( )
 		/* code fils voie */
 		CreerEtActiverVoie();
 	}
+	else if ( (feu = fork()) == 0 )
+	{
+		/* code fils feu */
+		CreerEtActiverFeu();
+	}
 	else if ( (gestionClavier = fork()) == 0 )
 	{
 		/* code fils gestionClavier */
-		Menu(); //Appeler creerEtActiverGestionClavier()
+		CreerEtActiverGestionClavier(gestionClavier);
 	}
 	else
 	{
@@ -116,6 +123,7 @@ int main ( )
 /* --------------------- Destruction des processus ---------------------- */		
 		kill(generateur, SIGUSR2);
 		kill(voie, SIGUSR2);
+		kill(feu, SIGUSR2);
 		kill(heure, SIGUSR2);
 		
 

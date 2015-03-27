@@ -26,7 +26,7 @@
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 void CreerEtActiverVoie ( void );
-// Mode d'emploi :
+// Mode d'emploi : Initialise le handler pour gerer le SIGUSR2
 //
 // Contrat :
 //

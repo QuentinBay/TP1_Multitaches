@@ -25,8 +25,8 @@
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-// type Nom ( liste de paramètres );
-// Mode d'emploi :
+void CreerEtActiverFeu ( void );
+// Mode d'emploi : Initialise le handler pour gerer le SIGUSR2
 //
 // Contrat :
 //

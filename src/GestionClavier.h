@@ -28,7 +28,7 @@
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-void CreerEtActiverGestionClavier ( pid_t geneId );
+void CreerEtActiverGestionClavier ( pid_t geneId , int uneBalId );
 // Mode d'emploi :
 //
 // Contrat :

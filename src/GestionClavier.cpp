@@ -13,11 +13,12 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
-
+#include <sys/msg.h>
 //------------------------------------------------------ Include personnel
 #include "GestionClavier.h"
 #include "/share/public/tp/tp-multitache/Menu.h"
 #include "/share/public/tp/tp-multitache/Outils.h"
+#include "/share/public/tp/tp-multitache/Voiture.h"	
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
 
@@ -25,7 +26,9 @@
 
 //---------------------------------------------------- Variables statiques
 static pid_t generateurId;
+static int balId;
 static bool Off;
+static unsigned int numVoiture = 0;
 //------------------------------------------------------ Fonctions privées
 //static type nom ( liste de paramètres )
 // Mode d'emploi :
@@ -39,11 +42,12 @@ static bool Off;
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-void CreerEtActiverGestionClavier ( pid_t geneId )
+void CreerEtActiverGestionClavier ( pid_t geneId , int uneBalId )
 // Algorithme : Appel Menu
 //
 {
 	generateurId = geneId;
+	balId = uneBalId;
 	Off = false;
 	Menu();
 }
@@ -80,11 +84,43 @@ void Commande ( char code )
 	}
 } //----- fin de Commande
 
-void Commande ( TypeVoie entree, TypeVoie sortie )
+void Commande ( TypeVoie uneEntree, TypeVoie uneSortie )
 // Algorithme :
 //
 {
+	struct Voiture voiture;
+	voiture.entree = uneEntree;
+	voiture.sortie = uneSortie;
+	if ( numVoiture == numeroMaxManuel )
+	{
+		/* On a atteint le numero max */
+		numVoiture = numeroMinManuel;
+	}
+	else
+	{
+		numVoiture++;
+	}
+	voiture.numero = numVoiture;
 
+	//Creation et envoie du message
+	struct MsgVoiture *ptrMsg, msgVoiture;
+	ptrMsg=&msgVoiture;
+	ptrMsg->type=(long)uneEntree;
+	ptrMsg->uneVoiture=voiture;
+	
+
+	if ( (msgsnd( balId, ptrMsg, TAILLE_MSG_VOITURE, 0 )) == 0 )
+	{
+		Effacer (NUMERO);
+		Afficher(NUMERO, voiture.numero, GRAS);
+		Effacer (ENTREE);
+		Afficher(ENTREE, voiture.entree, GRAS);
+		Effacer (SORTIE);
+		Afficher(SORTIE, voiture.sortie, GRAS);
+		OperationVoie (PLUS, uneEntree);
+	}
+	//Effacer (MESSAGE);
+	//Afficher(MESSAGE, "msg créé !", GRAS);
 } //----- fin de Commande
 
 void Commande ( TypeVoie uneVoie, unsigned int duree )

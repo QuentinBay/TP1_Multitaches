@@ -73,18 +73,18 @@ int main ( )
 
 /* ------------------ Creation des memoires partagees ------------------ */
 	key_t clefCouleurFeu = ftok ("Carrefour",1);
-	int memCouleurFeu = shmget ( clefCouleurFeu , sizeof(int)*4 , 660 | IPC_CREAT );
+	int memCouleurFeu = shmget ( clefCouleurFeu , sizeof(int)*4 , 0660 | IPC_CREAT );
 
 	key_t clefDureeFeu = ftok ("Carrefour",1);
-	int memDureeFeu = shmget ( clefDureeFeu , sizeof(int)*2 , 660 | IPC_CREAT );
+	int memDureeFeu = shmget ( clefDureeFeu , sizeof(int)*2 , 0660 | IPC_CREAT );
 
 	//Semaphores
 	key_t clefSemFeu = ftok ("Carrefour",1);
-	int semFeu = semget ( clefSemFeu , 2 , 660 | IPC_CREAT );
+	int semFeu = semget ( clefSemFeu , 2 , 0660 | IPC_CREAT );
 
 	//Boite aux lettres
 	key_t clefBoiteLettres = ftok ("Carrefour",1);
-	int boiteLettres = ( clefBoiteLettres , 660 | IPC_CREAT );
+	int boiteLettres = msgget( clefBoiteLettres , IPC_CREAT | 0660 );
 
 /* ----------------------- Creation des processus ---------------------- */
 	pid_t heure;
@@ -114,7 +114,7 @@ int main ( )
 	else if ( (gestionClavier = fork()) == 0 )
 	{
 		/* code fils gestionClavier */
-		CreerEtActiverGestionClavier(generateur);
+		CreerEtActiverGestionClavier( generateur , boiteLettres );
 	}
 	else
 	{

@@ -27,6 +27,7 @@
 //---------------------------------------------------- Variables statiques
 static pid_t generateurId;
 static int balId;
+static int memDureeId;
 static bool Off;
 static unsigned int numVoiture = 0;
 //------------------------------------------------------ Fonctions privées
@@ -42,12 +43,13 @@ static unsigned int numVoiture = 0;
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-void CreerEtActiverGestionClavier ( pid_t geneId , int uneBalId )
+void CreerEtActiverGestionClavier (pid_t geneId, int uneBalId, int unememDureeId)
 // Algorithme : Appel Menu
 //
 {
 	generateurId = geneId;
 	balId = uneBalId;
+	memDureeId = unememDureeId;
 	Off = false;
 	Menu();
 }
@@ -127,5 +129,10 @@ void Commande ( TypeVoie uneVoie, unsigned int duree )
 // Algorithme :
 //
 {
-
+	struct MsgDureeFeu
+	{
+		long voie;
+		unsigned int temps;
+	};
+	
 } //----- fin de Commande

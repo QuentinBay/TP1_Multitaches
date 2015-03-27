@@ -76,7 +76,7 @@ int main ( )
 	int memCouleurFeu = shmget ( clefCouleurFeu , sizeof(int)*4 , 0660 | IPC_CREAT );
 
 	key_t clefDureeFeu = ftok ("Carrefour",1);
-	int memDureeFeu = shmget ( clefDureeFeu , sizeof(int)*2 , 0660 | IPC_CREAT );
+	int memDureeFeu = shmget ( clefDureeFeu , ( sizeof(int)+ sizeof(long)) , 0660 | IPC_CREAT );
 
 	//Semaphores
 	key_t clefSemFeu = ftok ("Carrefour",1);
@@ -109,12 +109,12 @@ int main ( )
 	else if ( (feu = fork()) == 0 )
 	{
 		/* code fils feu */
-		CreerEtActiverFeu();
+		CreerEtActiverFeu(memDureeFeu, semFeu);
 	}
 	else if ( (gestionClavier = fork()) == 0 )
 	{
 		/* code fils gestionClavier */
-		CreerEtActiverGestionClavier( generateur , boiteLettres );
+		CreerEtActiverGestionClavier(generateur, boiteLettres, memDureeFeu);
 	}
 	else
 	{
@@ -122,10 +122,15 @@ int main ( )
 		waitpid(gestionClavier, NULL, 0);
 
 /* --------------------- Destruction des processus ---------------------- */		
+		kill(generateur, SIGCONT);
 		kill(generateur, SIGUSR2);
+		waitpid(generateur, NULL, 0);
 		kill(voie, SIGUSR2);
+		waitpid(voie, NULL, 0);
 		kill(feu, SIGUSR2);
+		waitpid(feu, NULL, 0);
 		kill(heure, SIGUSR2);
+		waitpid(heure, NULL, 0);
 		
 
 		TerminerApplication ( true );

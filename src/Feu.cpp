@@ -21,7 +21,8 @@
 //------------------------------------------------------------------ Types
 
 //---------------------------------------------------- Variables statiques
-
+static int memDureeFeuId;
+static int semDureeFeuId;
 //------------------------------------------------------ Fonctions privées
 static void FinFeu ( int noSignal )
 // Mode d'emploi :
@@ -39,7 +40,7 @@ static void FinFeu ( int noSignal )
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-void CreerEtActiverFeu ( void )
+void CreerEtActiverFeu (int uneMemDureeFeuId, int uneSemDureeFeuId)
 // Algorithme :
 //
 {
@@ -50,5 +51,6 @@ void CreerEtActiverFeu ( void )
 	action.sa_flags = 0;
 	sigaction ( SIGUSR2, &action, NULL );
 
-
+	memDureeFeuId = uneMemDureeFeuId;
+	semDureeFeuId = uneSemDureeFeuId;
 } //----- fin de CreerEtActiverFeu

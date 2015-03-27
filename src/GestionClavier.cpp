@@ -24,8 +24,8 @@
 //------------------------------------------------------------------ Types
 
 //---------------------------------------------------- Variables statiques
-pid_t generateurId;
-bool Off;
+static pid_t generateurId;
+static bool Off;
 //------------------------------------------------------ Fonctions privées
 //static type nom ( liste de paramètres )
 // Mode d'emploi :
@@ -63,18 +63,18 @@ void Commande ( char code )
 		if ( Off )
 		{
 			/* Il faut desactiver le generateur */
-			
-			Effacer ( ETAT_GENERATEUR );
-			Afficher ( ETAT_GENERATEUR , "OFF" );
-			Off = false;
 			kill ( generateurId , SIGSTOP );
+			Effacer ( ETAT_GENERATEUR );
+			Afficher ( ETAT_GENERATEUR , "OFF" , GRAS );
+			Off = false;
+			
 		}
 		else
 		{
 			/* Il faut activer le generateur */
 			kill ( generateurId , SIGCONT );
 			Effacer ( ETAT_GENERATEUR );
-			Afficher ( ETAT_GENERATEUR , "ON" );
+			Afficher ( ETAT_GENERATEUR , "ON" , GRAS );
 			Off = true;
 		}
 	}

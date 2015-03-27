@@ -67,6 +67,7 @@ int main ( )
 	sigemptyset ( &action.sa_mask );
 	action.sa_flags = 0;
 	sigaction ( SIGUSR2, &action, NULL );
+	sigaction ( SIGCHLD, &action, NULL );
 	
 	InitialiserApplication ( XTERM );
 
@@ -87,7 +88,7 @@ int main ( )
 
 /* ----------------------- Creation des processus ---------------------- */
 	pid_t heure;
-	static pid_t generateur;
+	pid_t generateur;
 	pid_t voie;
 	pid_t feu;
 	pid_t gestionClavier;
@@ -113,7 +114,7 @@ int main ( )
 	else if ( (gestionClavier = fork()) == 0 )
 	{
 		/* code fils gestionClavier */
-		CreerEtActiverGestionClavier(gestionClavier);
+		CreerEtActiverGestionClavier(generateur);
 	}
 	else
 	{

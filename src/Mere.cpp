@@ -72,20 +72,31 @@ int main ( )
 	InitialiserApplication ( XTERM );
 
 /* ------------------ Creation des memoires partagees ------------------ */
-	key_t clefCouleurFeu = ftok ("Carrefour",1);
-	int memCouleurFeu = shmget ( clefCouleurFeu , sizeof(int)*4 , 0660 | IPC_CREAT );
+	int idCouleurFeu = shmget (IPC_PRIVATE , sizeof(CouleurFeux), 
+														0660 | IPC_CREAT );
 
-	key_t clefDureeFeu = ftok ("Carrefour",1);
-	int memDureeFeu = shmget ( clefDureeFeu , ( sizeof(int)+ sizeof(long)) , 0660 | IPC_CREAT );
+	int idDureeFeu = shmget (IPC_PRIVATE, sizeof(DureeFeux), 
+														0660 | IPC_CREAT );
 
-	//Semaphores
-	key_t clefSemFeu = ftok ("Carrefour",1);
-	int semFeu = semget ( clefSemFeu , 2 , 0660 | IPC_CREAT );
+	//Semaphores d exclusion mutuelle
+	int idSemFeu = semget ( IPC_PRIVATE , 2 , 0660 | IPC_CREAT );
 
 	//Boite aux lettres
 	key_t clefBoiteLettres = ftok ("Carrefour",1);
 	int boiteLettres = msgget( clefBoiteLettres , IPC_CREAT | 0660 );
 
+/* ---------------- Initialisation des memoires partagees -------------- */
+	// Initialisation de CouleurFeux
+	CouleurFeux* memCouleurFeux = (CouleurFeux*) shmat(idCouleurFeu, NULL, 0);
+	memCouleurFeux->couleurNS = false;
+	memCouleurFeux->couleurEO = false;
+	shmdt(memCouleurFeux);
+
+	// Initialisation de DureeFeux
+	DureeFeux* memDureeFeux = (DureeFeux*) shmat(idDureeFeu, NULL, 0);
+	memDureeFeux->dureeEO = 12;
+	memDureeFeux->dureeNS = 18;
+	shmdt(memDureeFeux);
 /* ----------------------- Creation des processus ---------------------- */
 	pid_t heure;
 	pid_t generateur;
@@ -109,12 +120,12 @@ int main ( )
 	else if ( (feu = fork()) == 0 )
 	{
 		/* code fils feu */
-		CreerEtActiverFeu(memDureeFeu, semFeu);
+		CreerEtActiverFeu(idDureeFeu, idCouleurFeu, idSemFeu);
 	}
 	else if ( (gestionClavier = fork()) == 0 )
 	{
 		/* code fils gestionClavier */
-		CreerEtActiverGestionClavier(generateur, boiteLettres, memDureeFeu);
+		CreerEtActiverGestionClavier(generateur, boiteLettres, idDureeFeu);
 	}
 	else
 	{
@@ -122,13 +133,16 @@ int main ( )
 		waitpid(gestionClavier, NULL, 0);
 
 /* --------------------- Destruction des processus ---------------------- */		
-		kill(generateur, SIGCONT);
+		kill(generateur, SIGCONT); //On doit envoyer SIGCONT pour le detruire
 		kill(generateur, SIGUSR2);
 		waitpid(generateur, NULL, 0);
+
 		kill(voie, SIGUSR2);
 		waitpid(voie, NULL, 0);
+
 		kill(feu, SIGUSR2);
 		waitpid(feu, NULL, 0);
+
 		kill(heure, SIGUSR2);
 		waitpid(heure, NULL, 0);
 		
@@ -138,9 +152,9 @@ int main ( )
 
 /* ---------------- Destruction des memoires partagees ------------------ */
 		cout << "destruction des semaphores, mémoires, et boiteLettres !\r\n";
-		shmctl ( memCouleurFeu , IPC_RMID , 0 );
-		shmctl ( memDureeFeu , IPC_RMID , 0 );
-		semctl ( semFeu , 2 , IPC_RMID , 0 );
+		shmctl ( idCouleurFeu , IPC_RMID , 0 );
+		shmctl ( idDureeFeu , IPC_RMID , 0 );
+		semctl ( idSemFeu , 2 , IPC_RMID , 0 );
 		msgctl ( boiteLettres , IPC_RMID , 0 );
 	}
 	return 0;

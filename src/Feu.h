@@ -25,7 +25,7 @@
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-void CreerEtActiverFeu (int uneMemDureeFeuId, int uneSemDureeFeuId);
+void CreerEtActiverFeu (int unIdDureeFeu, int unIdCouleurFeu, int unIdSemFeu);
 // Mode d'emploi : Initialise le handler pour gerer le SIGUSR2
 //
 // Contrat :

@@ -154,16 +154,16 @@ void Commande ( TypeVoie uneVoie, unsigned int duree )
 	if (uneVoie==NORD || uneVoie==SUD)
 	{
 		/* On modifie la duree du feu nord-sud */
-		semop(idMemDuree, &reserver, 1);
+		semop(idSem, &reserver, 1);
 		memDureeFeux->dureeNS = duree;
-		semop(idMemDuree, &liberer, 1);
+		semop(idSem, &liberer, 1);
 	}
 	else if (uneVoie==EST || uneVoie==OUEST)
 	{
 		/* On modifie la duree du feu est-ouest */
-		semop(idMemDuree, &reserver, 1);
+		semop(idSem, &reserver, 1);
 		memDureeFeux->dureeEO = duree;
-		semop(idMemDuree, &liberer, 1);
+		semop(idSem, &liberer, 1);
 	}
 	else
 	{

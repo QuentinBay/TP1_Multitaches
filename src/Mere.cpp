@@ -79,7 +79,8 @@ int main ( )
 														0660 | IPC_CREAT );
 
 	//Semaphores d exclusion mutuelle
-	int idSemFeu = semget ( IPC_PRIVATE , 2 , 0660 | IPC_CREAT );
+	int idSemFeu = semget ( IPC_PRIVATE , 1 , 0660 | IPC_CREAT );
+	semctl(idSemFeu, 0, SETVAL, 1);
 
 	//Boite aux lettres
 	key_t clefBoiteLettres = ftok ("Carrefour",1);
@@ -154,7 +155,7 @@ int main ( )
 		cout << "destruction des semaphores, mémoires, et boiteLettres !\r\n";
 		shmctl ( idCouleurFeu , IPC_RMID , 0 );
 		shmctl ( idDureeFeu , IPC_RMID , 0 );
-		semctl ( idSemFeu , 2 , IPC_RMID , 0 );
+		semctl ( idSemFeu , 0 , IPC_RMID , 0 );
 		msgctl ( boiteLettres , IPC_RMID , 0 );
 	}
 	return 0;

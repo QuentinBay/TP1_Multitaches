@@ -81,10 +81,10 @@ void CreerEtActiverFeu (int unIdDureeFeu, int unIdCouleurFeu, int unIdSemFeu)
 	maMemDureeFeu = (DureeFeux*) shmat(monIdDureeFeu, NULL, 0);
 
 	// Initialisation des durees des feux
-	semop(monIdDureeFeu, &reserver, 1);
+	semop(monIdSemFeu, &reserver, 1);
 	tempsEO = maMemDureeFeu->dureeEO;
 	tempsNS = maMemDureeFeu->dureeNS;
-	semop(monIdDureeFeu, &liberer, 1);
+	semop(monIdSemFeu, &liberer, 1);
 
 	// Les feux de l axe Nord Sud se mettent au vert
 	maMemCouleurFeu->couleurNS = true;
@@ -106,10 +106,10 @@ void CreerEtActiverFeu (int unIdDureeFeu, int unIdCouleurFeu, int unIdSemFeu)
 	{
 		
 /*----------------------- MISE A JOUR DES DONNEES -----------------------*/
-		semop(monIdDureeFeu, &reserver, 1);
+		semop(monIdSemFeu, &reserver, 1);
 		tempsEO = maMemDureeFeu->dureeEO;
 		tempsNS = maMemDureeFeu->dureeNS;
-		semop(monIdDureeFeu, &liberer, 1);
+		semop(monIdSemFeu, &liberer, 1);
 		
 		Afficher(DUREE_AXE_NS, tempsNS, STANDARD, NORMALE);
 		Afficher(DUREE_AXE_EO, tempsEO, STANDARD, NORMALE);
@@ -145,10 +145,10 @@ void CreerEtActiverFeu (int unIdDureeFeu, int unIdCouleurFeu, int unIdSemFeu)
 		}
 		
 /*----------------------- MISE A JOUR DES DONNEES -----------------------*/
-		semop(monIdDureeFeu, &reserver, 1);
+		semop(monIdSemFeu, &reserver, 1);
 		tempsEO = maMemDureeFeu->dureeEO;
 		tempsNS = maMemDureeFeu->dureeNS;
-		semop(monIdDureeFeu, &liberer, 1);
+		semop(monIdSemFeu, &liberer, 1);
 		
 		Afficher(DUREE_AXE_NS, tempsNS, STANDARD, NORMALE);
 		Afficher(DUREE_AXE_EO, tempsEO, STANDARD, NORMALE);

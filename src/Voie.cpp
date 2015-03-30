@@ -103,11 +103,50 @@ void CreerEtActiverVoie ( TypeVoie uneVoie, int unIdMemCouleurFeux, int unIdBal 
 	voie = uneVoie;
 	idMemCouleurFeux = unIdMemCouleurFeux;
 	idBal = unIdBal;
+	struct MsgVoiture message;
+	//Attachement de la memoire partagee
+	maMemCouleurFeux = (CouleurFeux*) shmat(idMemCouleurFeux, NULL, 0);
 
 /* -------------------------------- Moteur ----------------------------- */
 	for(;;)
 	{
+		//Verification qu il y a une voiture en attente
+	    if(msgrcv(idBal, &message, TAILLE_MSG_VOITURE, voie, 1)!=-1)
+	    {
+		    // Affichage des voitures     
+		    DessinerVoitureFeu( message.uneVoiture.numero, message.uneVoiture.entree, 
+	      						message.uneVoiture.sortie);
+		    OperationVoie (MOINS, voie);
 
+		    if (voie == NORD || voie == SUD)
+		    {
+		        /*Verification toutes les secondes de la couleur du feu Nord-Sud*/
+		        while (!maMemCouleurFeux->couleurNS)
+		        {
+		          sleep(1);
+		        }
+        
+		        //Ajout d une voiture 
+		        pid_t voiture =DeplacerVoiture(message.uneVoiture.numero, 
+		    										message.uneVoiture.entree, 
+		    										message.uneVoiture.sortie);
+		        voituresCrees.push_back(voiture);
+      		}
+		    else if (voie == EST || voie == OUEST)
+		    {
+		        /*Verification toutes les secondes de la couleur du feu Est-Ouest*/
+		        while (!maMemCouleurFeux->couleurEO)
+		        {
+		          sleep(1);
+		        }
+
+		        //Ajout d une voiture
+		        pid_t voiture =DeplacerVoiture(message.uneVoiture.numero, 
+		        									message.uneVoiture.entree, 
+		        									message.uneVoiture.sortie);
+		        voituresCrees.push_back(voiture);
+      		}
+    	}
 	}
 } //----- fin de CreerEtActiverVoie
 

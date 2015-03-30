@@ -35,7 +35,7 @@ using namespace std;
 static TypeVoie voie;
 //memoire partagee pour la couleur des feux
 static CouleurFeux* maMemCouleurFeux;
-
+int idMemCouleurFeux;
 int idBal;
 
 //Liste des voitures qui sont presentes sur le carrefour
@@ -63,24 +63,51 @@ static void FinVoie ( int noSignal )
 
 		//Detachement de la memoire
 		shmdt(maMemCouleurFeux);
-		
+
 		exit(0);
+	}
+	else if ( noSignal == SIGCHLD)
+	{
+		/* Une voiture a quitte le carrefour */
+		//On recupere le pid de cette voiture
+		int etat;
+		pid_t pidVoiture = wait (&etat);
+		std::vector<pid_t> ::iterator it;
+		for (it=voituresCrees.begin(); *it!=pidVoiture; ++it)
+		{
+			voituresCrees.erase(it);
+		}
 	}
 } //----- fin de FinVoie
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-void CreerEtActiverVoie ( void )
+void CreerEtActiverVoie ( TypeVoie uneVoie, int unIdMemCouleurFeux, int unIdBal )
 // Algorithme :
 //
 {
 	//Creation d'un handler pour SIGUSR2
-	struct sigaction action;
-	action.sa_handler = FinVoie;
-	sigemptyset ( &action.sa_mask );
-	action.sa_flags = 0;
-	sigaction ( SIGUSR2, &action, NULL );
+	struct sigaction terminerVoie;
+	terminerVoie.sa_handler = FinVoie;
+	sigemptyset ( &terminerVoie.sa_mask );
+	terminerVoie.sa_flags = 0;
+	sigaction ( SIGUSR2, &terminerVoie, NULL );
 
+	//Creation d'un handler pour SIGCHLD
+	struct sigaction finVoiture;
+	finVoiture.sa_handler = FinVoie;
+	sigemptyset ( &finVoiture.sa_mask );
+	finVoiture.sa_flags = 0;
+	sigaction ( SIGCHLD, &finVoiture, NULL );
+/* ----------------------------- Initialisation ------------------------ */
+	voie = uneVoie;
+	idMemCouleurFeux = unIdMemCouleurFeux;
+	idBal = unIdBal;
 
+/* -------------------------------- Moteur ----------------------------- */
+	for(;;)
+	{
+
+	}
 } //----- fin de CreerEtActiverVoie
 

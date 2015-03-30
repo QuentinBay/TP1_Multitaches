@@ -83,8 +83,7 @@ int main ( )
 	semctl(idSemFeu, 0, SETVAL, 1);
 
 	//Boite aux lettres
-	key_t clefBoiteLettres = ftok ("Carrefour",1);
-	int boiteLettres = msgget( clefBoiteLettres , IPC_CREAT | 0660 );
+	int boiteLettres = msgget( IPC_PRIVATE , IPC_CREAT | 0660 );
 
 /* ---------------- Initialisation des memoires partagees -------------- */
 	// Initialisation de CouleurFeux
@@ -101,7 +100,10 @@ int main ( )
 /* ----------------------- Creation des processus ---------------------- */
 	pid_t heure;
 	pid_t generateur;
-	pid_t voie;
+	pid_t voieN;
+	pid_t voieS;
+	pid_t voieE;
+	pid_t voieO;
 	pid_t feu;
 	pid_t gestionClavier;
 
@@ -113,10 +115,25 @@ int main ( )
 	{
 		/* code fils generateur */
 	}
-	else if ( (voie = fork()) == 0 )
+	else if ( (voieN = fork()) == 0 )
 	{
-		/* code fils voie */
-		CreerEtActiverVoie();
+		/* code fils voie NORD */
+		CreerEtActiverVoie(NORD, idCouleurFeu, boiteLettres);
+	}
+	else if ( (voieS = fork()) == 0 )
+	{
+		/* code fils voie SUD */
+		CreerEtActiverVoie(SUD, idCouleurFeu, boiteLettres);
+	}
+	else if ( (voieE = fork()) == 0 )
+	{
+		/* code fils voie EST */
+		CreerEtActiverVoie(EST, idCouleurFeu, boiteLettres);
+	}
+	else if ( (voieO = fork()) == 0 )
+	{
+		/* code fils voie OUEST */
+		CreerEtActiverVoie(OUEST, idCouleurFeu, boiteLettres);
 	}
 	else if ( (feu = fork()) == 0 )
 	{
@@ -138,8 +155,14 @@ int main ( )
 		kill(generateur, SIGUSR2);
 		waitpid(generateur, NULL, 0);
 
-		kill(voie, SIGUSR2);
-		waitpid(voie, NULL, 0);
+		kill(voieN, SIGUSR2);
+		waitpid(voieN, NULL, 0);
+		kill(voieS, SIGUSR2);
+		waitpid(voieS, NULL, 0);
+		kill(voieE, SIGUSR2);
+		waitpid(voieE, NULL, 0);
+		kill(voieO, SIGUSR2);
+		waitpid(voieO, NULL, 0);
 
 		kill(feu, SIGUSR2);
 		waitpid(feu, NULL, 0);

@@ -19,13 +19,14 @@
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisées
 #include <unistd.h>
+#include "/share/public/tp/tp-multitache/Outils.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-void CreerEtActiverVoie ( void );
+void CreerEtActiverVoie ( TypeVoie uneVoie, int unIdMemCouleurFeux, int unIdBal );
 // Mode d'emploi : Initialise le handler pour gerer le SIGUSR2
 //
 // Contrat :

@@ -125,7 +125,7 @@ int main ( )
 	else if ( (gestionClavier = fork()) == 0 )
 	{
 		/* code fils gestionClavier */
-		CreerEtActiverGestionClavier(generateur, boiteLettres, idDureeFeu);
+		CreerEtActiverGestionClavier(generateur, boiteLettres, idDureeFeu, idSemFeu);
 	}
 	else
 	{

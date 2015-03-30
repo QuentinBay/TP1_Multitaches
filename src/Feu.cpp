@@ -54,6 +54,9 @@ static void FinFeu ( int noSignal )
 {
 	if ( noSignal == SIGUSR2 )
 	{
+		//Detachement de la memoire
+		shmdt(maMemDureeFeu);
+		shmdt(maMemCouleurFeu);
 		exit(0);
 	}
 } //----- fin de FinFeu
@@ -183,8 +186,6 @@ void CreerEtActiverFeu (int unIdDureeFeu, int unIdCouleurFeu, int unIdSemFeu)
 			Afficher(TEMPS_AXE_NS, i, STANDARD, NORMALE);
 			sleep(1);
 		}
-
-		//myMemEtatFeux->nS = true;
 		
 	}
 

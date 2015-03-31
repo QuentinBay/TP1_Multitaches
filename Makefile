@@ -1,24 +1,23 @@
-# Utilise make pour compiler
+#Executable
 EXE             = Carrefour
-
 # Compilateur et editeur de lien
 CXX            = g++
 
-# Options de compilation et editions de liens
+# Librairies et drapeaux
 LIBS = -ltp -lncurses -ltcl 
 CPPFLAGS        = -Wall -ansi -ggdb -g -std=c++11 -I/share/public/tp/tp-multitache
 EDLFLAGS        = -L/share/public/tp/tp-multitache $(LIBS)
 
-#Fichiers
+#Fichiers sources
 SRC             =  
 INT             = src/Mere.h src/Voie.h src/Feu.h src/GestionClavier.h       #Mettre les .h ici
 REAL            = $(INT:.h=.cpp)
-OBJ             = $(INT:.h=.o)        #Mettre le .o du programme de test la où ya le main
+OBJ             = $(INT:.h=.o)      
 
-#Autres commandes et message
+#Affichage, sauvegarde et suppression
 ECHO            = @echo
 RM              = @rm
-BACKUP 		= /share/public/tp/tp-multitache/Compte-Rendu/2015/4/B3434
+BACKUP 		= /share/public/tp/tp-multitache/Compte-Rendu/2015/4/B3434/TP-Multitache
 MESSAGE         = "Succès !!"
 
 $(EXE): $(OBJ)
@@ -26,7 +25,7 @@ $(EXE): $(OBJ)
 	$(ECHO) $(MESSAGE)
 
 
-#Mettre les dependances particulieres ici
+#Creation des .o
 src/%.o: %.cpp 
 	$(CXX) -c $< $(CPPFLAGS)
 
@@ -34,7 +33,7 @@ src/%.o: %.cpp
 #Eviter fichiers de meme nom
 .PHONY: clean backup
 
-#Supprimer les fichiers
+#Supprimer les fichiers .o
 clean:
 	$(RM) -fv src/*.o
 

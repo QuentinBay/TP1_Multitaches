@@ -115,30 +115,30 @@ int main ( )
 	{
 		/* code fils generateur */
 	}
-	else if ( (voieN = fork()) == 0 )
-	{
-		/* code fils voie NORD */
-		CreerEtActiverVoie(NORD, idCouleurFeu, boiteLettres);
-	}
-	else if ( (voieS = fork()) == 0 )
-	{
-		/* code fils voie SUD */
-		CreerEtActiverVoie(SUD, idCouleurFeu, boiteLettres);
-	}
-	else if ( (voieE = fork()) == 0 )
-	{
-		/* code fils voie EST */
-		CreerEtActiverVoie(EST, idCouleurFeu, boiteLettres);
-	}
-	else if ( (voieO = fork()) == 0 )
-	{
-		/* code fils voie OUEST */
-		CreerEtActiverVoie(OUEST, idCouleurFeu, boiteLettres);
-	}
 	else if ( (feu = fork()) == 0 )
 	{
 		/* code fils feu */
 		CreerEtActiverFeu(idDureeFeu, idCouleurFeu, idSemFeu);
+	}
+	else if ( (voieN = fork()) == 0 )
+	{
+		/* code fils voie NORD */
+		CreerEtActiverVoie(NORD, idCouleurFeu, boiteLettres, idSemFeu);
+	}
+	else if ( (voieS = fork()) == 0 )
+	{
+		/* code fils voie SUD */
+		CreerEtActiverVoie(SUD, idCouleurFeu, boiteLettres, idSemFeu);
+	}
+	else if ( (voieE = fork()) == 0 )
+	{
+		/* code fils voie EST */
+		CreerEtActiverVoie(EST, idCouleurFeu, boiteLettres, idSemFeu);
+	}
+	else if ( (voieO = fork()) == 0 )
+	{
+		/* code fils voie OUEST */
+		CreerEtActiverVoie(OUEST, idCouleurFeu, boiteLettres, idSemFeu);
 	}
 	else if ( (gestionClavier = fork()) == 0 )
 	{

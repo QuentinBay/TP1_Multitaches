@@ -73,7 +73,7 @@ void CreerEtActiverGestionClavier (pid_t unPidGenerateur, int unIdBal,
 }
 
 void Commande ( char code )
-// Algorithme :
+// Algorithme : Active ou desactive le generateur
 //
 {
 	if ( code=='Q' )
@@ -108,7 +108,7 @@ void Commande ( char code )
 } //----- fin de Commande
 
 void Commande ( TypeVoie uneEntree, TypeVoie uneSortie )
-// Algorithme :
+// Algorithme : Ajoute une voiture manuellement
 //
 {
 	struct Voiture voiture;
@@ -142,8 +142,6 @@ void Commande ( TypeVoie uneEntree, TypeVoie uneSortie )
 		Afficher(SORTIE, voiture.sortie, GRAS);
 		OperationVoie (PLUS, uneEntree);
 	}
-	//Effacer (MESSAGE);
-	//Afficher(MESSAGE, "msg créé !", GRAS);
 } //----- fin de Commande
 
 void Commande ( TypeVoie uneVoie, unsigned int duree )

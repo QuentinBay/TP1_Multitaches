@@ -85,7 +85,6 @@ static void FinVoie ( int noSignal )
 		{
 			voituresCrees.erase(it);
 		}
-		exit(0);
 	}
 } //----- fin de FinVoie
 
